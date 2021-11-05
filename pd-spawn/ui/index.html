@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
+    <style>
+        #index {
+            display: none;
+            position: absolute;
+            margin-left: -20px;
+        }
+
+        .spawn, .spawnNow {
+            padding: 3.5% 7.5%;
+            width: 25vh;
+            margin-top: 5%;
+			border: 1px solid #0251a1;
+            list-style: none;
+            border-radius: 3px;
+
+            background: rgba(0, 0, 0, .85);
+            color: white;
+            
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+            
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="index">
+        <ul>
+            <li class="spawnNow" style="background: #0251a1;" data-spawn="spawn">Başlat</li>
+            <br>
+            <li class="spawn" data-spawn="pink">Otel Bölgesi</li>
+            <li class="spawn" data-spawn="last">Son Pozisyon</li>
+        </ul>
+    </div>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <script>
+        $(() => {
+            window.addEventListener('message', (event) => {
+                if (event.data.display) {
+                    $('#index').show();
+                } else {
+                    $('#index').hide();
+                }
+            })
+
+            $('li').click(function(){
+                $.post('http://pd-spawn/spawn',
+                    JSON.stringify({
+                        choice: $(this).data('spawn')
+                    })
+                );
+            });
+
+            
+
+            $('.spawn').on('mousedown', function(){
+                $(this).css('background', 'rgba(0, 50, 0, .85');
+            }).on('mouseup mouseLeave', function(){
+                $(this).css('background', 'rgba(0, 0, 0, .85');
+            });
+
+            $('.spawn').hover(function(){
+                $(this).css({
+                    'width': '27vh',
+                });
+            }, function(){
+                $(this).css({
+                    'background': 'rgba(0, 0, 0, .85)',
+                    'width': '25vh'
+                });
+            });
+
+            $('.spawnNow').hover(function(){
+                $(this).css({
+                    'background': 'rgba(20, 100, 20, .85)',
+                    'width': '27vh'
+                });
+            }, function(){
+                $(this).css({
+                    'background': 'rgba(0, 50, 0, .85)',
+                    'width': '25vh'
+                });
+            });
+        })
+    </script>
+</body>
+</html>
